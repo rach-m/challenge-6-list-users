@@ -2,35 +2,26 @@ import React, { Component } from 'react';
 import './styles/App.css';
 import './styles/userList.css';
 import Header from './components/Header';
+import PersonList from './components/PersonList';
+import axios from 'axios';
 
 class App extends Component {
+    state = {
+        people: []
+    };
+    async componentDidMount(){
+        let data = await axios.get('https://randomuser.me/api/?results=20');
+        this.setState({
+            people: data.data.results
+        });
+    }
+
     render() {
+        // console.log(this.state.people);
         return (
             <div className="App">
                 <Header appName="SuperDate"/>
-                <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
-                <div className="userList">
-                    <div className="user">
-                        <div className="picture">
-                            <img src="https://randomuser.me/api/portraits/women/95.jpg" alt="Joy Noel"/>
-                        </div>
-                        <div className="info">
-                            <div className="name">
-                                <span>Mrs </span>
-                                <span>Joy </span>
-                                <span>Noel </span>
-                            </div>
-                            <div className="email">
-                                <span>joy.noel@example.com</span>
-                            </div>
-                            <div className="phone">
-                                <span>(576)-670-5855</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <PersonList people = { this.state.people }/>
             </div>
         );
     }
